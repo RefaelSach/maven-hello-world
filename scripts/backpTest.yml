@@ -24,12 +24,12 @@ jobs:
         run: |
           chmod +x ./scripts/increment_version.sh  # Ensure it's executable
           ./scripts/increment_version.sh  # Execute the script
-    #    id: increment_version
+        id: increment_version
 
-    #   - name: Verify new_version output
-    #     run: echo "New version is $new_version"
-    #     env:
-    #         new_version: ${{ env.new_version }}
+      - name: Verify new_version output
+        run: echo "New version is $new_version"
+        env:
+            new_version: ${{ env.new_version }}
 
       - name: Compile the code with Maven
         working-directory: ./myapp 
@@ -51,14 +51,14 @@ jobs:
           echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
           docker build -t $DOCKER_IMAGE .
 
-    #   - name: Debug Docker image tag
-    #     run: |
-    #       echo "DOCKER_IMAGE=$DOCKER_IMAGE"
-    #       echo "Target tag: ${{ secrets.DOCKER_USERNAME }}/maven-my-app:${{ env.new_version }}"
+      - name: Debug Docker image tag
+        run: |
+          echo "DOCKER_IMAGE=$DOCKER_IMAGE"
+          echo "Target tag: ${{ secrets.DOCKER_USERNAME }}/maven-my-app:${{ env.new_version }}"
 
       - name: Tag Docker image
         run: |
-          docker tag $DOCKER_IMAGE ${{ secrets.DOCKER_USERNAME }}/$DOCKER_IMAGE
+          docker tag $DOCKER_IMAGE ${{ secrets.DOCKER_USERNAME }}/maven-my-app:${{env.new_version}}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -69,12 +69,12 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/$DOCKER_IMAGE
+          docker push ${{ secrets.DOCKER_USERNAME }}/maven-my-app:${{env.new_version}}
 
 
       - name: Run Docker image
         run: |
-          docker run -d --name my-app-container ${{ secrets.DOCKER_USERNAME }}/$DOCKER_IMAGE
+          docker run -d --name my-app-container ${{ secrets.DOCKER_USERNAME }}/maven-my-app:${{env.new_version}}
 
     
         
