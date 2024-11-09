@@ -26,6 +26,11 @@ jobs:
           ./scripts/increment_version.sh  # Execute the script
         id: increment_version
 
+      - name: Verify new_version output
+        run: echo "New version is $new_version"
+        env:
+            new_version: ${{ env.new_version }}
+            
       - name: Compile the code with Maven
         working-directory: ./myapp 
         run: mvn clean install
