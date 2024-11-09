@@ -22,8 +22,8 @@ jobs:
       
       - name: Increment version
         run: |
-          chmod +x ./scripts/increment_version.sh  # Ensure it's executable
-          ./scripts/increment_version.sh  # Execute the script
+          chmod +x ./scripts/increment_version.sh  
+          ./scripts/increment_version.sh  
         id: increment_version
 
       - name: Verify new_version output
