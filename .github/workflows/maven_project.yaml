@@ -24,7 +24,7 @@ jobs:
         run: |
           chmod +x ./scripts/increment_version.sh  # Ensure it's executable
           ./scripts/increment_version.sh  # Execute the script
-       id: increment_version
+        id: increment_version
 
       - name: Verify new_version output
         run: echo "New version is $new_version"
