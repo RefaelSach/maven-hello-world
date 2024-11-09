@@ -39,6 +39,8 @@ jobs:
             git add pom.xml
             git commit -m "Update version in pom.xml"
             git push origin main
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Compile the code with Maven
         working-directory: ./myapp 
