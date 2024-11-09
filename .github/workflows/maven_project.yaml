@@ -48,6 +48,7 @@ jobs:
       - name: Build Docker image
         run: |
           DOCKER_IMAGE="maven-my-app:${{ env.new_version }}"
+          echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
           docker build -t $DOCKER_IMAGE .
 
       - name: Debug Docker image tag
