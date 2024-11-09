@@ -43,7 +43,7 @@ jobs:
 
       - name: Tag Docker image
         run: |
-          docker tag $DOCKER_IMAGE your-dockerhub-username/my-app:$DOCKER_IMAGE
+          docker tag $DOCKER_IMAGE ${{ secrets.DOCKER_USERNAME }}/maven-my-app:${{env.new_version}}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
