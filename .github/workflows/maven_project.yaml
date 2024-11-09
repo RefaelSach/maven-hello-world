@@ -30,7 +30,7 @@ jobs:
         run: echo "New version is $new_version"
         env:
             new_version: ${{ env.new_version }}
-            
+
       - name: Compile the code with Maven
         working-directory: ./myapp 
         run: mvn clean install
@@ -49,6 +49,11 @@ jobs:
         run: |
           DOCKER_IMAGE="maven-my-app:${{ env.new_version }}"
           docker build -t $DOCKER_IMAGE .
+
+      - name: Debug Docker image tag
+        run: |
+          echo "DOCKER_IMAGE=$DOCKER_IMAGE"
+          echo "Target tag: ${{ secrets.DOCKER_USERNAME }}/maven-my-app:${{ env.new_version }}"
 
       - name: Tag Docker image
         run: |
