@@ -24,11 +24,14 @@ jobs:
         run: |
           chmod +x ./scripts/increment_version.sh  # Ensure it's executable
           ./scripts/increment_version.sh  # Execute the script
+        id: increment_version
 
       - name: Compile the code with Maven
+        working-directory: ./myapp 
         run: mvn clean install
 
       - name: Package the JAR file
+        working-directory: ./myapp 
         run: mvn package
 
       - name: Upload JAR artifact
