@@ -24,12 +24,21 @@ jobs:
         run: |
           chmod +x ./scripts/increment_version.sh  # Ensure it's executable
           ./scripts/increment_version.sh  # Execute the script
-    #    id: increment_version
+       id: increment_version
 
-    #   - name: Verify new_version output
-    #     run: echo "New version is $new_version"
-    #     env:
-    #         new_version: ${{ env.new_version }}
+      - name: Verify new_version output
+        run: echo "New version is $new_version"
+        env:
+            new_version: ${{ env.new_version }}
+
+      - name: Commit and push version change
+        working-directory: ./myapp 
+        run: |
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git add myapp/pom.xml
+            git commit -m "Update version in pom.xml"
+            git push origin main
 
       - name: Compile the code with Maven
         working-directory: ./myapp 
