@@ -2,7 +2,7 @@
 
 #Github action sh script based on this locally tested script.
 
-
+cd myapp
 #Retrieve current version form pom.xml file using mvn commands
 app_project_current_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 echo "Current version from pom.xml file is: $app_project_current_version"
