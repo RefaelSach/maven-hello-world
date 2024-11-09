@@ -24,5 +24,6 @@ if [[ "$new_project_version_validation" != "$app_project_new_version" ]]; then
     exit 1
 else
     echo "Successfully updated version to: $new_project_version_validation"
+    echo "new_version=$new_version" >> "$GITHUB_ENV"
     exit 0
 fi
