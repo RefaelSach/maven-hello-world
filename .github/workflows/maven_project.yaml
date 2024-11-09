@@ -3,7 +3,7 @@ name: increment maven project pipelien
 on:
   push:
     branches:
-      - main 
+      - master
 
 jobs:
   build:
