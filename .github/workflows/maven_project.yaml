@@ -14,11 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin' 
+    # Removed because being handled in multistage dockerfile
+    #  - name: Set up JDK 11
+    #    uses: actions/setup-java@v3
+    #    with:
+    #      java-version: '11'
+    #      distribution: 'temurin' 
       
       - name: Increment version
         run: |
@@ -36,31 +37,42 @@ jobs:
         run: |
             git config --global user.name "github-actions[bot]"
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git add pom.xml
-            git commit -m "Update version in pom.xml"
+            git config --global alias.add-commit '!git add -A && git commit'
+            git add-commmit -m "Update version in pom.xml" 
             git push origin master
+          #git add pom.xml
+          # git commit -m "Update version in pom.xml"
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Compile the code with Maven
-        working-directory: ./myapp 
-        run: mvn clean install
+    # Removed because being handled in multistage dockerfile     
+    #  - name: Compile the code with Maven
+    #    working-directory: ./myapp 
+    #    run: mvn clean install
+    
+    # Removed because being handled in multistage dockerfile
+    #  - name: Package the JAR file
+    #    working-directory: ./myapp 
+    #    run: mvn package
 
-      - name: Package the JAR file
-        working-directory: ./myapp 
-        run: mvn package
-
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: maven-my-app-artifact
-          path: myapp/target/*.jar  
+    # Removed because being handled in multistage dockerfile
+    #  - name: Upload JAR artifact
+    #    uses: actions/upload-artifact@v3
+    #    with:
+    #      name: maven-my-app-artifact
+    #      path: myapp/target/*.jar  
 
       - name: Build Docker image
         run: |
+          echo "${{ secrets.APPUSER_PASSWORD }}" > password-file
           DOCKER_IMAGE="maven-my-app:${{ env.new_version }}"
           echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
-          docker build -t $DOCKER_IMAGE .
+          docker build --secret id=APPUSER_PASSWORD,src=password-file -t $DOCKER_IMAGE .
+        env:
+          APPUSER_PASSWORD: ${{ secrets.APPUSER_PASSWORD }}
+      
+      - name: Remove passowrd file
+        run: rm password-file
 
     #   - name: Debug Docker image tag
     #     run: |
