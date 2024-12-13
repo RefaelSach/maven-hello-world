@@ -21,7 +21,8 @@ COPY --from=build /build/myapp/target/*.jar app.jar
 
 RUN --mount=type=secret, id=APPUSER_PASSWORD \
     useradd --create-home --shell /bin/bash appuser && \
-    echo "appuser:$(cat /run/secrets/APPUSER_PASSWORD)" | chpasswd && \
+    PASSWORD=$(cat /run/secrets/APPUSER_PASSWORD) && \
+    echo "appuser:${PASSWORD}" | chpasswd && \
     chown appuser:appuser app.jar
 
 USER appuser
