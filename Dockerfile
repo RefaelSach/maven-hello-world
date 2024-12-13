@@ -19,7 +19,7 @@ WORKDIR /app
 
 COPY --from=build /build/myapp/target/*.jar app.jar
 
-RUN --mount=type=secret, id=APPUSER_PASSWORD \
+RUN --mount=type=secret,id=APPUSER_PASSWORD \
     useradd --create-home --shell /bin/bash appuser && \
     PASSWORD=$(cat /run/secrets/APPUSER_PASSWORD) && \
     echo "appuser:${PASSWORD}" | chpasswd && \
